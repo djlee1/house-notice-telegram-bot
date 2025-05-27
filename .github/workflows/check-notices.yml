@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y chromium-driver
-          pip install selenium requests
+          pip install selenium requests pandas
 
       - name: Debug Chrome version
         run: |
