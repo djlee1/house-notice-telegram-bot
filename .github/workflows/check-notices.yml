@@ -39,6 +39,9 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
           git pull origin main
+      
           git add hashes.json
           git commit -m "Update hashes.json [skip ci]" || echo "No changes to commit"
+      
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin main
