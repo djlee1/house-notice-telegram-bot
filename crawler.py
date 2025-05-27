@@ -135,11 +135,47 @@ def crawl_podium830(url):
     driver.quit()
     return results
 
+def crawl_soco(url):
+    driver = get_driver()
+    driver.get(url)
+    time.sleep(3)
+
+    results = []
+    try:
+        rows = driver.find_elements(By.CSS_SELECTOR, "#boardList tr")
+
+        for row in rows:
+            try:
+                cells = row.find_elements(By.TAG_NAME, "td")
+                if len(cells) < 4:
+                    continue
+
+                link_elem = cells[2].find_element(By.TAG_NAME, "a")
+                title = link_elem.text.strip()
+                href = link_elem.get_attribute("href")
+                if href and not href.startswith("http"):
+                    base = "https://soco.seoul.go.kr/youth/bbs/BMSR00015/"
+                    href = requests.compat.urljoin(base, href)
+
+                date = cells[3].text.strip()
+
+                if title:
+                    results.append((title, href, date))
+            except Exception:
+                continue
+    except Exception as e:
+        print(f"소코 크롤링 오류: {e}")
+
+    driver.quit()
+    return results
+
 def dispatch_crawler(site):
     if site["type"] == "elyes":
         return crawl_elyes(site["url"])
     elif site["type"] == "podium830":
         return crawl_podium830(site["url"])
+    elif site["type"] == "soco":
+        return crawl_soco(site["url"])
     else:
         print(f"❗ 지원되지 않는 사이트 유형: {site['type']}")
         return []

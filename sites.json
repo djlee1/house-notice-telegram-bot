@@ -4,9 +4,14 @@
     "url": "https://www.elyes.co.kr/info/notice.do",
     "type": "elyes"
   },
-    {
+  {
     "name": "더포디움830",
     "url": "https://thepodium830.com/center/notice?isNotice=false&searchKey=all&searchValue&page=1",
     "type": "podium830"
+  },
+  {
+    "name": "소코청년주거",
+    "url": "https://soco.seoul.go.kr/youth/bbs/BMSR00015/list.do?menuNo=400008",
+    "type": "soco"
   }
 ]
