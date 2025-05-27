@@ -42,11 +42,16 @@ def hash_notice(title, link, date=None):
         return hashlib.sha256(f"{title}{link}{date}".encode()).hexdigest()
     return hashlib.sha256(f"{title}{link}".encode()).hexdigest()
 
+def escape_markdown(text):
+    escape_chars = r"_*[]()~`>#+-=|{}.!\\"
+    return re.sub(rf"([{re.escape(escape_chars)}])", r"\\\1", text)
+
 def notify_telegram(msg):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
-        "text": msg
+        "text": msg,
+        "parse_mode": "MarkdownV2",
     }
     resp = requests.post(url, data=payload)
     if resp.status_code != 200:
@@ -211,14 +216,18 @@ def main():
         if new_items:
             print(f"✅ [{site_name}] {len(new_items)}개의 새 공고 발견!")
             for item in new_items:
+                # 새 공고 감지된 후 메시지 만들기 직전
                 if len(item) == 2:
                     title, link = item
-                    msg = f"🆕 *{site_name}*\n{title}\n👉 {link}"
+                    msg = f"🆕 *{escape_markdown(site_name)}*\n{escape_markdown(title)}\n👉 {escape_markdown(link)}"
                 else:
                     title, link, date = item
-                    msg = f"🆕 *{site_name}*\n{title}\n📅 {date}\n👉 {link}"
-                    
-                print(f"알림: {title}")
+                    msg = (
+                        f"🆕 *{escape_markdown(site_name)}*\n"
+                        f"{escape_markdown(title)}\n"
+                        f"📅 {escape_markdown(date)}\n"
+                        f"👉 {escape_markdown(link)}"
+                    )
                 notify_telegram(msg)
         else:
             print(f"✅ [{site_name}] 새 공고 없음")
