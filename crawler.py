@@ -49,7 +49,12 @@ def notify_telegram(msg):
         "text": msg,
         "parse_mode": "Markdown"
     }
-    requests.post(url, data=payload)
+    resp = requests.post(url, data=payload)
+    if resp.status_code != 200:
+        print(f"❌ Telegram message failed: {resp.text}")
+    else:
+        print("✅ Telegram message sent.")
+
 
 def crawl_elyes(url):
     driver = get_driver()
