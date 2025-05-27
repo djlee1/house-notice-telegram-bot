@@ -27,7 +27,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python crawler.py
-       - name: Commit updated hashes
+
+      - name: Commit updated hashes
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
