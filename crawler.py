@@ -46,8 +46,7 @@ def notify_telegram(msg):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
-        "text": msg,
-        "parse_mode": "Markdown"
+        "text": msg
     }
     resp = requests.post(url, data=payload)
     if resp.status_code != 200:
