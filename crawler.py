@@ -174,6 +174,33 @@ def crawl_soco(url):
     driver.quit()
     return results
 
+def crawl_homedubu(url):
+    driver = get_driver()
+    driver.get(url)
+    time.sleep(3)
+
+    results = []
+    try:
+        items = driver.find_elements(By.CSS_SELECTOR, "div.tdb_module_loop.td_module_wrap")
+        for item in items:
+            try:
+                link_elem = item.find_element(By.CSS_SELECTOR, "h3.entry-title a")
+                title = link_elem.get_attribute("title") or link_elem.text.strip()
+                link = link_elem.get_attribute("href")
+
+                date_elem = item.find_element(By.CSS_SELECTOR, "span.td-post-date time")
+                date = date_elem.text.strip()
+
+                if title and link:
+                    results.append((title, link, date))
+            except Exception:
+                continue
+    except Exception as e:
+        print(f"홈두부 크롤링 오류: {e}")
+
+    driver.quit()
+    return results
+
 def dispatch_crawler(site):
     if site["type"] == "elyes":
         return crawl_elyes(site["url"])
@@ -181,6 +208,8 @@ def dispatch_crawler(site):
         return crawl_podium830(site["url"])
     elif site["type"] == "soco":
         return crawl_soco(site["url"])
+    elif site["type"] == "homedubu":
+        return crawl_homedubu(site["url"])
     else:
         print(f"❗ 지원되지 않는 사이트 유형: {site['type']}")
         return []

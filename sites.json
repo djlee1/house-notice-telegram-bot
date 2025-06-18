@@ -13,5 +13,10 @@
     "name": "소코청년주거",
     "url": "https://soco.seoul.go.kr/youth/bbs/BMSR00015/list.do?menuNo=400008",
     "type": "soco"
+  },
+  {
+    "name": "홈두부",
+    "url": "https://homedubu.com/category/subscription/",
+    "type": "homedubu"
   }
 ]
